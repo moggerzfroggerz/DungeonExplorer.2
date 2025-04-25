@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
+    // Derived classes of creature implement IDamageable:
     public abstract class Creature : IDamageable
     {
         public string Name { get; set; }

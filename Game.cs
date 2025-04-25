@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
@@ -19,6 +20,9 @@ namespace DungeonExplorer
         {
             // Player name and HP:
             player = new Player("Player", 100);
+
+            // Bread is a healing item that every player begins with:
+            player.AddItem("Bread");
 
             // The rooms are created below:
             Room room1 = new Room("A dark room, covered in slime, with a foul aroma overpowering your nose.\nA huge slug-like monster is watching you, creeping closer...");
@@ -48,7 +52,11 @@ namespace DungeonExplorer
         public void Start()
         {
             bool playing = true;
+            // Displays a description of the current room:
             Console.WriteLine($"Current Room: {currentRoom.RoomDescription()}");
+
+            // Displays items found within the current room:
+            Console.WriteLine($"\nItems in this room: {currentRoom.RoomItems()}.");
 
             while (playing)
             {
@@ -70,7 +78,7 @@ namespace DungeonExplorer
                 }
                 else
                 {
-                    Console.WriteLine("There is no monster in this room.");
+                    Console.WriteLine("\nYou cannot attack as there is no monster in this room.");
                 }
                 string input = ExplorerInput();
 
@@ -83,27 +91,39 @@ namespace DungeonExplorer
                     // Player deals damage to the monster:
                     Console.WriteLine(currentRoom.RoomMonster.Damage());
 
+                    // If monster still has HP, it will attack the player:
+                    if (currentRoom.RoomMonster.IsAlive())
+                    {
+                        currentRoom.RoomMonster.AttackPlayer(player);
+                    }
+
                 }
-                else if (input == "s" && !player.HasItems())
+                else if (input == "c" && !player.HasItems())
                 {
                     string item = currentRoom.RoomItems();
                     player.AddItem(item);
+                    Console.Clear();
                     Console.WriteLine($"You have picked up {item}.");
                 }
                 else if (input == "b" && player.HasItems())
                 {
-                    Console.WriteLine($"Your backpack contains: {player.ShowInventory()}");
-                    Console.WriteLine("Enter 'u' to use an item, or enter 'r' to return the item to the backpack.");
+                    Console.WriteLine($"\nYour backpack contains: {player.ShowInventory()}");
+                    Console.WriteLine("\nEnter 'u' to use an item, or enter 'r' to return the item to the backpack.");
                     string secondInput = Console.ReadLine();
 
                     if (secondInput == "r")
                     {
-                        Console.WriteLine("You have returned the item to the backpack.");
+                        Console.Clear();
+                        Console.WriteLine("You returned the item to the backpack.");
                     }
                     else if (secondInput == "u")
                     {
-                        // Unlock doors:
-                        UnlockDoors();
+                        // Asks the player what item they want to use:
+                        Console.WriteLine("Enter the item that you want to use:");
+                        string itemToUse = Console.ReadLine();
+
+                        string result = player.Consume(itemToUse);
+                        Console.WriteLine(result);
                     }
                 }
                 else if (input == "m")
@@ -111,10 +131,41 @@ namespace DungeonExplorer
                     // Moves the player to another room:
                     MoveToAnotherRoom();
                 }
-                else if  (input == "e")
+                else if (input == "e")
                 {
-                    // Player can eat to restore HP:
-                    Console.WriteLine(player.Eat());
+                    var inventoryItems = player.GetInventory();
+                    var usableItems = new List<string>();
+
+                    foreach (var item in inventoryItems)
+                    {
+                        if (Player.IsHealingItem(item))
+                        {
+                            usableItems.Add(item);
+                        }
+                    }
+
+                    if (usableItems.Count == 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("\nYou currently have no healing items.");
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("\nYour healing items:");
+                        Console.WriteLine(string.Join(", ", usableItems));
+                        Console.WriteLine("\nWhich item would you like to use?");
+                        string itemToUse = Console.ReadLine()?.Trim(); // Trim user input too
+
+                        if (usableItems.Contains(itemToUse))
+                        {
+                            Console.WriteLine(player.Consume(itemToUse));
+                        }
+                        else
+                        {
+                            Console.WriteLine($"{itemToUse} is not a healing item in your inventory.");
+                        }
+                    }
                 }
                 else
                 {
@@ -129,10 +180,10 @@ namespace DungeonExplorer
                     Console.WriteLine("You have defeated the monster in this room!");
 
                     // String prints when player has killed the monster:
-                    currentRoom.SetDescription("The room is empty - there are no more monsters here.");
+                    currentRoom.SetDescription("Remains of a defeated monster lay flat on the floor.");
 
                     string itemDropped = "a mysterious key";
-                    Console.WriteLine($"\nThe {currentRoom.RoomMonster.GetName()} dropped {itemDropped}!\n");
+                    Console.WriteLine($"\n> The {currentRoom.RoomMonster.GetName()} dropped {itemDropped}!\n");
 
                     player.AddItem(itemDropped);
 
@@ -142,7 +193,9 @@ namespace DungeonExplorer
 
                     if (currentRoom.RoomMonster == null)
                     {
-                        Console.WriteLine("\nEverything feels still. You feel as though you must push forwards...");
+                        Console.WriteLine("Everything feels still. You feel as though you must push forwards...");
+                        // Displays items found within the current room:
+                        Console.WriteLine($"\nItems in this room: {currentRoom.RoomItems()}");
                     }
                     
                 }
@@ -155,12 +208,12 @@ namespace DungeonExplorer
             Console.WriteLine("\nMake your move:");
             Console.WriteLine("Enter d to deal damage.");
             Console.WriteLine("Enter e to eat food and regain health.");
-            if (!player.HasItems()) Console.WriteLine("Enter s to search for items.");
-            if (player.HasItems()) Console.WriteLine("Enter b to view your backpack.");
+            if (!player.HasItems()) Console.WriteLine("Enter c to collect items.");
+            if (player.HasItems()) Console.WriteLine("Enter b to open your backpack.");
             Console.WriteLine("Enter m to move to another room.");
 
             string input = Console.ReadLine();
-            Debug.Assert(input == "d" || input == "e" || input == "s" || input == "b" || input == "m", "Invalid input.");
+            Debug.Assert(input == "d" || input == "e" || input == "c" || input == "b" || input == "m", "Invalid input.");
             return input;
         }
 
@@ -207,8 +260,16 @@ namespace DungeonExplorer
             if (currentRoom.ConnectedRooms.ContainsKey(direction))
             {
                 currentRoom = currentRoom.ConnectedRooms[direction];
-                Console.WriteLine($"\nYou moved to: {currentRoom.RoomDescription()}");
-                Console.WriteLine($"\nYou encounter a {currentRoom.RoomMonster.GetName()}!");
+                Console.WriteLine($"\nCurrent Room: {currentRoom.RoomDescription()}");
+
+                // Check if there's a monster:
+                if (currentRoom.RoomMonster != null)
+                {
+                    Console.WriteLine($"\nYou encounter a {currentRoom.RoomMonster.GetName()}!");
+                }
+
+                // Show room items:
+                Console.WriteLine($"\nItems in this room: {currentRoom.RoomItems()}");
             }
             else
             {

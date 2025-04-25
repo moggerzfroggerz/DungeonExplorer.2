@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
-    public class Player
+    public class Player : Creature, IDamageable
     {
         // Initialises the name and health attribute for the player. 
         public string Name { get; private set; }
         public int Health { get; private set; }
         private List<string> inventory = new List<string>();
 
-        public Player(string name, int health)
+        public Player(string name, int health) : base(name, health)
         {
             Name = name;
             Tests.TestForPositiveInteger(health);
@@ -34,23 +34,53 @@ namespace DungeonExplorer
         {
             return this.Health;
         }
-        // The code below boosts the player's health when they choose to eat. 
-        public string Eat()
+
+        // Allows other classes to access this method without making any changes:
+        public List<string> GetInventory()
         {
-            Console.WriteLine("\nYou ate some bread you found on the floor and have healed 40 health.");
-            this.Health = this.Health + 40;
-            return $"Your health is: {this.Health}";
+            return new List<string>(inventory);
         }
-        public string Hurt()
+
+        private static readonly Dictionary<string, int> healingItems = new Dictionary<string, int>
+        // Below are the healing items that can be used within the game:
         {
-            Console.WriteLine("You have been hurt and lost 10 health!");
-            this.Health = this.Health - 10;
-            return $"Your health is: {this.Health}";
+            {"Bread", 10},
+            {"Minor HP Potion", 20},
+            {"Major HP Potion", 30}
+        };
+
+        public static bool IsHealingItem(string item)
+        {
+            return healingItems.ContainsKey(item);
+        }
+
+        // The code below boosts the player's health when they choose to eat. 
+        public string Consume(string item)
+        {
+            if (!inventory.Contains(item))
+            {
+                Console.Clear();
+                return $"\nYou don't have any {item} to consume.";
+            }
+
+            // Does healing, as long as the item is a healing item:
+            if (healingItems.ContainsKey(item))
+            {
+                int healAmount = healingItems[item];
+                Health = Math.Min(Health + healAmount, 300);
+                inventory.Remove(item);
+                Console.Clear();
+                return $"You used {item} and healed {healAmount} HP. Your current HP is: {Health}.";
+            }
+            else
+            {
+                return $"{item} is not a healing item.";
+            }
         }
         public void DamagePlayer(int damage)
         {
             Health = Health - damage;
-            Console.WriteLine($"You have been attacked and lost {damage} points! Player Health: {Health}");
+            Console.WriteLine($"You lost {damage} HP!");
         }
         public bool Escaped()
         {

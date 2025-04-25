@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DungeonExplorer
 {
     // This class contains the get and set methods for the monster's attributes and other methods. 
-    public class Monster : Creature
+    public class Monster : Creature, IDamageable
     {
         public int MinHP { get; protected set; }
         public int MaxHP { get; protected set; }
@@ -60,38 +60,8 @@ namespace DungeonExplorer
         {
             Random random = new Random();
             int damage = random.Next(MinDmg, MaxDmg + 1);
-            Console.WriteLine($"{Name} has attacked you with {damage} damage!");
+            Console.WriteLine($"\n{Name} attacked you...");
             target.DamagePlayer(damage);
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-//            // Decreases the monster's health by 5 each time it is called. 
-//            this.Health = this.Health - 5;
-//            return $"You hit the {this.Name} as hard as you could... It now has {Health} health.";
-//        }
-//        public virtual void Heal()
-//        {
-//            // Increases the monster's health by 10 each time it is called. 
-//            this.Health = this.Health + 10;
-//        }
-//        public virtual void AttackPlayer(Player target)
-//        {
-//            //The monster will attack the player and decrease their health. 
-//            int damage = 10;
-//            Console.WriteLine($"{Name} has attacked you! ");
-//            target.DamagePlayer(damage);
-//        }
-//    }
-//}
