@@ -48,20 +48,41 @@ namespace DungeonExplorer
         public void Start()
         {
             bool playing = true;
-            Console.WriteLine($"You have entered: {currentRoom.RoomDescription()}");
+            Console.WriteLine($"Current Room: {currentRoom.RoomDescription()}");
 
             while (playing)
             {
                 // Current player and monster health are displayed:
-                Console.WriteLine($"\nYour current HP is: {player.ShowHealth()}");
-                Console.WriteLine($"{currentRoom.RoomMonster.GetName()} current HP is: {currentRoom.RoomMonster.GetHealth()}");
+                Console.WriteLine($"\nYour current HP is:");
+                // Player HP value is shown in green:
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(player.ShowHealth());
+                Console.ResetColor();
+                Console.WriteLine();
 
+                if (currentRoom.RoomMonster != null)
+                {
+                    Console.WriteLine($"\n{currentRoom.RoomMonster.GetName()} current HP is:");
+                    // Monster HP values are shown in Dark Magenta:
+                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    Console.Write(currentRoom.RoomMonster.GetHealth());
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine("There is no monster in this room.");
+                }
                 string input = ExplorerInput();
 
-                if (input == "d")
+                // Error-handling is used here to make sure the player cannot deal damage when no monster exists:
+                if (input == "d" && currentRoom.RoomMonster != null)
                 {
+                    // Console is cleared so the game looks tidier:
+                    Console.Clear();
+
                     // Player deals damage to the monster:
                     Console.WriteLine(currentRoom.RoomMonster.Damage());
+
                 }
                 else if (input == "s" && !player.HasItems())
                 {
@@ -100,21 +121,37 @@ namespace DungeonExplorer
                     // If the user enters an invalid input, this string will be shown:
                     Console.WriteLine("Please enter a valid option.");
                 }
-
-                // Checks to see if the monster has been defeated:
-                if (!currentRoom.RoomMonster.IsAlive() && player.ShowHealth() > 0)
+                // Checks to see if the monster has been defeated and the player is still alive:
+                if (currentRoom.RoomMonster != null && !currentRoom.RoomMonster.IsAlive() && player.ShowHealth() > 0)
                 {
+                    Console.Clear();
+                    // Shows the player that they have slain the monster:
                     Console.WriteLine("You have defeated the monster in this room!");
-                    playing = false;
-                    break;
+
+                    // String prints when player has killed the monster:
+                    currentRoom.SetDescription("The room is empty - there are no more monsters here.");
+
+                    string itemDropped = "a mysterious key";
+                    Console.WriteLine($"\nThe {currentRoom.RoomMonster.GetName()} dropped {itemDropped}!\n");
+
+                    player.AddItem(itemDropped);
+
+                    currentRoom.RoomMonster = null;
+
+                    Console.WriteLine($"Current Room: {currentRoom.RoomDescription()}");
+
+                    if (currentRoom.RoomMonster == null)
+                    {
+                        Console.WriteLine("\nEverything feels still. You feel as though you must push forwards...");
+                    }
+                    
                 }
             }
-
-            Console.WriteLine("Game Over!");
         }
 
         private string ExplorerInput()
         {
+            Console.WriteLine("");
             Console.WriteLine("\nMake your move:");
             Console.WriteLine("Enter d to deal damage.");
             Console.WriteLine("Enter e to eat food and regain health.");

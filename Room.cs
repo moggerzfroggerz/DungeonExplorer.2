@@ -28,6 +28,11 @@ namespace DungeonExplorer
             return Description;
         }
 
+        public void SetDescription(string newDescription)
+        {
+            Description = newDescription;
+        }
+
         // Show the items that are in the room as a string:
         public string RoomItems()
         {

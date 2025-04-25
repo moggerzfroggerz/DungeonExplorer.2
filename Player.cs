@@ -37,7 +37,7 @@ namespace DungeonExplorer
         // The code below boosts the player's health when they choose to eat. 
         public string Eat()
         {
-            Console.WriteLine("You ate some bread you found on the floor and have healed 40 health.");
+            Console.WriteLine("\nYou ate some bread you found on the floor and have healed 40 health.");
             this.Health = this.Health + 40;
             return $"Your health is: {this.Health}";
         }

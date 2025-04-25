@@ -22,12 +22,12 @@ namespace DungeonExplorer
 
             this.Health -= damageDealt;
 
-            if (this.Health < MinHP)
+            if (this.Health < 0)
             {
-                this.Health = MinHP;
+                this.Health = 0;
             }
 
-            return $"You hit the {Name} as hard as you could, dealing {damageDealt} damage. Whimpering, it cowers backwards, growling, and now has {Health} health.";
+            return $"You hit the {Name} as hard as you could, dealing {damageDealt} damage.\nWhimpering, it cowers backwards, growling, and now has {Health} health.";
         }
     }
 }
