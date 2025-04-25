@@ -21,7 +21,7 @@ namespace DungeonExplorer
             // Initialize the game with a room, a player, and a monster, and sets their health values. 
             currentRoom = new Room("You enter a dim room and are faced with a huge slug-like monster! You notice a shimmering item on the floor...");
             player = new Player("Player", 100);
-            
+
         }
         public void Start()
         {
@@ -102,26 +102,26 @@ namespace DungeonExplorer
                         }
                     }
                 }
-                    else if (input == ("e"))
-                    {
-                        Console.WriteLine(player.Eat());
-                    }
-                    
-                    else
-                    {
-                        // If the user enters a character that is not an option, this statement will tell them to choose a letter above. 
-                        Console.WriteLine("Please input a letter from the options above.");
-                    }
+                else if (input == ("e"))
+                {
+                    Console.WriteLine(player.Eat());
+                }
+
+                else
+                {
+                    // If the user enters a character that is not an option, this statement will tell them to choose a letter above. 
+                    Console.WriteLine("Please input a letter from the options above.");
+                }
             }
-                // Damaging the monster until its health is less than 0 is the second path to win the game.
-                Console.WriteLine("You have killed the Scary Slug.");
-                Console.WriteLine("Congratulations, you have won the game!");
+            // Damaging the monster until its health is less than 0 is the second path to win the game.
+            Console.WriteLine("You have killed the Scary Slug.");
+            Console.WriteLine("Congratulations, you have won the game!");
 
-            }
+        }
 
 
 
-        
+
         private string ExplorerInput()
         {
             // This section presents the user with their options and returns their choice as the variable 'input' that is used above. 

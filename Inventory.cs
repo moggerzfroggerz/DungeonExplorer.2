@@ -22,9 +22,9 @@ namespace DungeonExplorer
         public string Name { get; private set; }
         public int Health { get; private set; }
         private List<string> inventory = new List<string>();
- 
+
         Inventory inv = new Inventory();
-        
+
         // The string below returns all the items in the player's backpack (inventory). 
         public string Backpack()
         {
