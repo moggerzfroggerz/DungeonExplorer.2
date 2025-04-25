@@ -36,7 +36,7 @@ namespace DungeonExplorer
 
         public string GetAvailableDirections()
         {
-            return string.Join(",", ConnectedRooms.Keys);
+            return string.Join(", ", ConnectedRooms.Keys);
         }
     }
 }
