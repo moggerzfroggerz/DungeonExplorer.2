@@ -187,24 +187,27 @@ namespace DungeonExplorer
 
                     if (usableItems.Count == 0)
                     {
-                        Console.Clear();
-                        Console.WriteLine("\nYou currently have no healing items.");
+                        //Console.Clear();
+                        //Console.WriteLine("You currently have no healing items.");
                     }
                     else
                     {
                         Console.Clear();
-                        Console.WriteLine("\nYour healing items:");
+                        Console.WriteLine("Your healing items:\n");
                         Console.WriteLine(string.Join(", ", usableItems));
                         Console.WriteLine("\nWhich item would you like to use?");
-                        string itemToUse = Console.ReadLine()?.Trim(); // Trim user input too
+                        
+                        string itemToUse = Console.ReadLine()?.Trim().ToLower();
 
-                        if (usableItems.Contains(itemToUse))
+                        var matchingItem = usableItems.FirstOrDefault(item => item.ToLower().Trim() == itemToUse);
+
+                        if (matchingItem != null)
                         {
                             Console.WriteLine(player.Consume(itemToUse));
                         }
                         else
                         {
-                            Console.WriteLine($"{itemToUse} is not a healing item in your inventory.");
+                            Console.WriteLine($"\n{itemToUse} is not a healing item in your inventory.");
                         }
                     }
                 }
@@ -292,21 +295,21 @@ namespace DungeonExplorer
             // The Trim() method is used so that the user can still go in a direction, even if they accidentally type a blank character:
             string direction = Console.ReadLine().Trim();
 
-            // The console is cleared everytime the player moves to another room. This is to prevent confusion for the player, and makes the game tidier:
-            Console.Clear();
-
             // The first letter of the user input is capitalised so that it will be a valid input, regardless of what case was used:
             direction = CapitalInitialLetter(direction);
 
             if (currentRoom.ConnectedRooms.ContainsKey(direction))
             {
                 currentRoom = currentRoom.ConnectedRooms[direction];
-                Console.WriteLine($"\nCurrent Room: {currentRoom.RoomDescription()}");
+                Console.Clear();
+                Console.WriteLine($"Current Room: {currentRoom.RoomDescription()}");
 
                 // If there is a monster present in the room, displays which monster it is: 
                 if (currentRoom.MonsterInRoom != null)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"\nYou encounter a {currentRoom.MonsterInRoom.GetName()}!");
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
 
                 // Displays which items are in the player's current room: 
@@ -315,8 +318,11 @@ namespace DungeonExplorer
             else
             {
                 // If the user tries to go somewhere where there is no room: 
-                Console.WriteLine("Invalid direction. Try again.");
+                Console.WriteLine("\nInvalid direction. Try again.");
+                Thread.Sleep(2000);
             }
+
+            // The console is cleared everytime the player moves to another room. This is to prevent confusion for the player, and makes the game tidier:
         }
     }
 }

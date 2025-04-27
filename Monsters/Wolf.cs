@@ -18,16 +18,16 @@ namespace DungeonExplorer
         {
             // This allows the monster to deal random damage within the minimum and maximum damage values:
             Random random = new Random();
-            int damageDoled = random.Next(MinimumDamage, MaximumDamage + 1);
+            int damageDone = random.Next(MinimumDamage, MaximumDamage + 1);
 
-            this.Health -= damageDoled;
+            this.Health -= damageDone;
 
             if (this.Health < 0)
             {
                 this.Health = 0;
             }
 
-            return $"You hit the {Name} as hard as you could, dealing {damageDoled} damage.\nWhimpering, it cowers backwards, growling, and now has {Health} health.";
+            return $"You hit the {Name} as hard as you could, dealing {damageDone} damage.\nWhimpering, it cowers backwards, growling, and now has {Health} health.";
         }
     }
 }

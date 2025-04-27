@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DungeonExplorer
 {
@@ -51,12 +52,17 @@ namespace DungeonExplorer
 
         public static bool IsHealingItem(string item)
         {
-            return healingItems.ContainsKey(item);
+            string normalisedItem = item.ToLower().Trim();
+            return healingItems.Keys.Any(k => k.ToLower().Trim() == normalisedItem);
+            //var healingItems = new List<string> { "bread,", "minor health potion", "major health potion" };
+            //return healingItems.Contains(item.ToLower().Trim());
         }
 
         // The code below boosts the player's health value when they choose to eat: 
         public string Consume(string item)
         {
+            item = item.ToLower().Trim();
+
             if (!inventory.Contains(item))
             {
                 Console.Clear();
@@ -77,7 +83,7 @@ namespace DungeonExplorer
                 return $"{item} is not a healing item.";
             }
         }
-        // The method below alters the players health value when a monster has doled damage: 
+        // The method below alters the players health value when a monster has dealt damage: 
         public void DamagePlayer(int damage)
         {
             Health = Health - damage;

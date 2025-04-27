@@ -37,15 +37,15 @@ namespace DungeonExplorer
         public virtual string Damage()
         {
             Random random = new Random();
-            int damageDoled = random.Next(MinimumDamage, MaximumDamage + 1);
+            int damageDone = random.Next(MinimumDamage, MaximumDamage + 1);
 
-            this.Health -= damageDoled;
+            this.Health -= damageDone;
             if (this.Health < MinimumHealth)
             {
                 this.Health = MinimumHealth;
             }
 
-            return $"You hit the {this.Name} as hard as you could, dealing {damageDoled}. It now has {Health} health.";
+            return $"You hit the {this.Name} as hard as you could, dealing {damageDone}. It now has {Health} health.";
         }
 
         public virtual void Heal()
