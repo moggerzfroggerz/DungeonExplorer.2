@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    // This class contains the Wolf's methods and attributes:  
-    internal class WarWolf : Monster
+    // This class contains the Creepy Caterpillar's methods and attributes: 
+    internal class CreepyCaterpillar : Monster
     {
         // Defines the Monster name, Main Health, Minimum Health, Maximum Health, Minimum Damage, Maximum Damage:
-        public WarWolf() : base("War Wolf", 30, 20, 40, 10, 20)
+        public CreepyCaterpillar() : base("Creepy Caterpillar", 10, 2, 8, 5, 6)
         {
         }
 
@@ -27,7 +27,7 @@ namespace DungeonExplorer
                 this.Health = 0;
             }
 
-            return $"You hit the {Name} as hard as you could, dealing {damageDoled} damage.\nWhimpering, it cowers backwards, growling, and now has {Health} health.";
+            return $"You hit the {Name} as hard as you could, dealing {damageDoled} damage.\nIt scurries backwards, and now has {Health} health.";
         }
     }
 }

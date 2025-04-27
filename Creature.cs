@@ -9,6 +9,7 @@ namespace DungeonExplorer
     // Derived classes of creature implement IDamageable:
     public abstract class Creature : IDamageable
     {
+        // Get and set methods for the name and health: 
         public string Name { get; set; }
         protected int Health { get; set; }
 

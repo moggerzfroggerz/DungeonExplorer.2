@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    // This class contains the get and set methods for the monster's attributes and other methods. 
+    // This class contains the get and set methods for the monster's attributes and other methods which can then be inherited and overriden to child classes: 
     public class Monster : Creature, IDamageable
     {
-        public int MinHP { get; protected set; }
-        public int MaxHP { get; protected set; }
-        public int MinDmg { get; protected set; }
-        public int MaxDmg { get; protected set; }
+        public int MinimumHealth { get; protected set; }
+        public int MaximumHealth { get; protected set; }
+        public int MinimumDamage { get; protected set; }
+        public int MaximumDamage { get; protected set; }
 
-        // Private get and set methods so that there is no accidental overlap or re-defining of the health and name variables. 
-        public Monster(string Name, int Health, int MinHP, int MaxHP, int MinDmg, int MaxDmg) : base(Name, Health)
+        // Public get and set methods so that they can be accessed from anywhere and prevents overlap:  
+        public Monster(string Name, int Health, int MinimumHealth, int MaximumHealth, int MinimumDamage, int MaximumDamage) : base(Name, Health)
         {
-            this.MinHP = MinHP;
-            this.MaxHP = MaxHP;
-            this.MinDmg = MinDmg;
-            this.MaxDmg = MaxDmg;
+            this.MinimumHealth = MinimumHealth;
+            this.MaximumHealth = MaximumHealth;
+            this.MinimumDamage = MinimumDamage;
+            this.MaximumDamage = MaximumDamage;
 
-            this.Health = Math.Min(Math.Max(Health, MinHP), MaxHP);
+            this.Health = Math.Min(Math.Max(Health, MinimumHealth), MaximumHealth);
         }
         public virtual int GetHealth()
         {
@@ -33,33 +33,34 @@ namespace DungeonExplorer
         {
             return Name;
         }
+        // Randomly generates a value of damage to the monster: 
         public virtual string Damage()
         {
             Random random = new Random();
-            int damageDealt = random.Next(MinDmg, MaxDmg + 1);
+            int damageDoled = random.Next(MinimumDamage, MaximumDamage + 1);
 
-            this.Health -= damageDealt;
-            if (this.Health < MinHP)
+            this.Health -= damageDoled;
+            if (this.Health < MinimumHealth)
             {
-                this.Health = MinHP;
+                this.Health = MinimumHealth;
             }
 
-            return $"You hit the {this.Name} as hard as you could, dealing {damageDealt}. It now has {Health} health.";
+            return $"You hit the {this.Name} as hard as you could, dealing {damageDoled}. It now has {Health} health.";
         }
 
         public virtual void Heal()
         {
             this.Health += 10;
-            if (this.Health > MaxHP)
+            if (this.Health > MaximumHealth)
             {
-                this.Health = MaxHP;
+                this.Health = MaximumHealth;
             }
         }
-
+        // When called, it will randomly generate a value of damage that will be took from the player's health: 
         public virtual void AttackPlayer(Player target)
         {
             Random random = new Random();
-            int damage = random.Next(MinDmg, MaxDmg + 1);
+            int damage = random.Next(MinimumDamage, MaximumDamage + 1);
             Console.WriteLine($"\n{Name} attacked you...");
             target.DamagePlayer(damage);
         }

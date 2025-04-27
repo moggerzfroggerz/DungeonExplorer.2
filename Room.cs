@@ -9,14 +9,14 @@ namespace DungeonExplorer
         public string Description { get; set; }
         public List<string> Inventory { get; set; }
         public Dictionary<string, Room> ConnectedRooms { get; set; }
-        public Monster RoomMonster { get; set; }
+        public Monster MonsterInRoom { get; set; }
 
 
         private static List<string> allAvailableItems = new List<string>
         {
             "Bread",
-            "Minor HP Potion",
-            "Major HP Potion",
+            "Minor Health Potion",
+            "Major Health Potion",
             "Shortsword",
             "Mace",
             "Boomerang",
@@ -24,6 +24,7 @@ namespace DungeonExplorer
             "Staff of Power",
             "Spear"
         };
+
 
         public Room(string description)
         {
@@ -75,23 +76,23 @@ namespace DungeonExplorer
             return randomItems;
         }
 
-        // Method to show items in the room
+        // The method below shows which items are in whichever room is called: 
         public string RoomItems()
         {
             if (Inventory.Count == 0)
             {
-                return "No items found in this room.";
+                return "None";
             }
             return string.Join(", ", Inventory);
         }
 
-        // Method to add an item to the room
-        public void AddItem(string item)
+        // This method adds an item to the room: 
+        public void AddItemToInventory(string item)
         {
             Inventory.Add(item);
         }
 
-        // Method to remove an item from the room
+        // This method removes an item from the room, used when a player has picked up an item: 
         public void RemoveItem(string item)
         {
             Inventory.Remove(item);

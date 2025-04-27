@@ -5,7 +5,7 @@ namespace DungeonExplorer
 {
     public class Player : Creature, IDamageable
     {
-        // Initialises the name and health attribute for the player. 
+        // Initialises the name and health attribute for the player: 
         public string Name { get; private set; }
         public int Health { get; private set; }
         private List<string> inventory = new List<string>();
@@ -16,7 +16,7 @@ namespace DungeonExplorer
             Tests.TestForPositiveInteger(health);
             Health = health;
         }
-        public void AddItem(string item)
+        public void AddItemToInventory(string item)
         {
             inventory.Add(item);
         }
@@ -29,7 +29,7 @@ namespace DungeonExplorer
         {
             return inventory.Count > 0 ? string.Join(", ", inventory) : "Your backpack is empty";
         }
-        // The code below returns the user's health value. 
+        // The variable below returns the user's health value:  
         public int ShowHealth()
         {
             return this.Health;
@@ -45,8 +45,8 @@ namespace DungeonExplorer
         // Below are the healing items that can be used within the game:
         {
             {"Bread", 10},
-            {"Minor HP Potion", 20},
-            {"Major HP Potion", 30}
+            {"Minor Health Potion", 20},
+            {"Major Health Potion", 30}
         };
 
         public static bool IsHealingItem(string item)
@@ -54,7 +54,7 @@ namespace DungeonExplorer
             return healingItems.ContainsKey(item);
         }
 
-        // The code below boosts the player's health when they choose to eat. 
+        // The code below boosts the player's health value when they choose to eat: 
         public string Consume(string item)
         {
             if (!inventory.Contains(item))
@@ -66,21 +66,22 @@ namespace DungeonExplorer
             // Does healing, as long as the item is a healing item:
             if (healingItems.ContainsKey(item))
             {
-                int healAmount = healingItems[item];
-                Health = Math.Min(Health + healAmount, 300);
+                int healValue = healingItems[item];
+                Health = Math.Min(Health + healValue, 300);
                 inventory.Remove(item);
                 Console.Clear();
-                return $"You used {item} and healed {healAmount} HP. Your current HP is: {Health}.";
+                return $"You used {item} and healed {healValue} Health. Your current Health is: {Health}.";
             }
             else
             {
                 return $"{item} is not a healing item.";
             }
         }
+        // The method below alters the players health value when a monster has doled damage: 
         public void DamagePlayer(int damage)
         {
             Health = Health - damage;
-            Console.WriteLine($"You lost {damage} HP!");
+            Console.WriteLine($"You lost {damage} Health!");
         }
         public bool Escaped()
         {

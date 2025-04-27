@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    // This class contains the get and set methods for the monster's attributes and other methods. 
+    // This class contains the get and set methods for the frog's attributes and other methods:  
     internal class FreakyFrog : Monster
     {
-        // Monster name, Main HP, Minimum HP, Maximum HP, Minimum Damage, Maximum Damage:
+        // Defines the Monster name, Main Health, Minimum Health, Maximum Health, Minimum Damage, Maximum Damage:
         public FreakyFrog() : base("Freaky Frog", 90, 70, 100, 15, 25)
         {
         }
@@ -18,16 +18,16 @@ namespace DungeonExplorer
         {
             // This allows the monster to deal random damage within the minimum and maximum damage values:
             Random random = new Random();
-            int damageDealt = random.Next(MinDmg, MaxDmg + 1);
+            int damageDoled = random.Next(MinimumDamage, MaximumDamage + 1);
 
-            this.Health -= damageDealt;
+            this.Health -= damageDoled;
 
             if (this.Health < 0)
             {
                 this.Health = 0;
             }
 
-            return $"You hit the {Name} as hard as you could, dealing {damageDealt} damage.\nCroaking, it leaps backwards, and now has {Health} health.";
+            return $"You hit the {Name} as hard as you could, dealing {damageDoled} damage.\nCroaking, it leaps backwards, and now has {Health} health.";
         }
     }
 }

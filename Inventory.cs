@@ -9,7 +9,7 @@ namespace DungeonExplorer
         {
             private List<string> items = new List<string>();
 
-            public void AddItem(string item)
+            public void AddItemToInventory(string item)
             {
                 items.Add(item);
             }
@@ -18,14 +18,14 @@ namespace DungeonExplorer
                 return string.Join(", ", items);
             }
         }
-        // Initialises the name and health attribute for the player. 
+        // Initialises the name and health attributes for the player:
         public string Name { get; private set; }
         public int Health { get; private set; }
         private List<string> inventory = new List<string>();
 
         Inventory inv = new Inventory();
 
-        // The string below returns all the items in the player's backpack (inventory). 
+        // The string below returns all the items in the player's backpack (inventory): 
         public string Backpack()
         {
             return string.Join(", ", inventory);
