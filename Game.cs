@@ -23,7 +23,8 @@ namespace DungeonExplorer
             player = new Player("Player", 100);
 
             // Bread is a healing item that every player begins with:
-            player.AddItemToInventory("Bread");
+            Item Bread = new Item("Bread");
+            player.AddItemToInventory(Bread);
 
             // The rooms are created below:
             Room room1 = new Room("A dark room, covered in slime, with a foul aroma overpowering your nose.\nA huge slug-like monster is watching you, creeping closer...");
@@ -115,16 +116,21 @@ namespace DungeonExplorer
                 // Error-handling is used here to make sure the player cannot deal damage when no monster exists:
                 if (input == "d" && currentRoom.MonsterInRoom != null)
                 {
-                    // Console is cleared so the game looks tidier:
-                    Console.Clear();
-
-                    // Player deals damage to the monster:
-                    Console.WriteLine(currentRoom.MonsterInRoom.Damage());
-
-                    // If monster still has Health, it will attack the player:
-                    if (currentRoom.MonsterInRoom.IsAlive())
+                    var bestWeapon = player.SortWeaponsDmg().FirstOrDefault();
+                    if (bestWeapon != null)
                     {
-                        currentRoom.MonsterInRoom.AttackPlayer(player);
+                        // Console is cleared so the game looks tidier:
+                        Console.Clear();
+
+                        int damageDone = bestWeapon.ItemDmg;
+                        // Player deals damage to the monster:
+                        Console.WriteLine(currentRoom.MonsterInRoom.Damage(damageDone));
+
+                        // If monster still has Health, it will attack the player:
+                        if (currentRoom.MonsterInRoom.IsAlive())
+                        {
+                            currentRoom.MonsterInRoom.AttackPlayer(player);
+                        }
                     }
 
                 }
@@ -145,13 +151,13 @@ namespace DungeonExplorer
                 {
                     Console.Clear();
                     Console.WriteLine($"Your backpack contains: {player.ShowInventory()}");
-                    Console.WriteLine("\nEnter 'u' to use an item, or enter 'r' to return the item to the backpack.");
+                    Console.WriteLine("\nEnter 'u' to use an item, or enter 'r' to close the backpack.");
                     string secondInput = Console.ReadLine();
 
                     if (secondInput == "r")
                     {
                         Console.Clear();
-                        Console.WriteLine("You returned the item to the backpack.");
+                        Console.WriteLine("You closed your backpack.");
                         Thread.Sleep(2000);
                         Console.Clear();
                         Console.WriteLine($"Current Room: {currentRoom.RoomDescription()}");
@@ -226,10 +232,12 @@ namespace DungeonExplorer
                     // String prints when player has killed the monster:
                     currentRoom.SetDescription("Remains of a defeated monster lay flat on the floor.");
 
-                    string itemDropped = "a mysterious key";
+                    String itemDropped = "a mysterious key";
                     Console.WriteLine($"\n> The {currentRoom.MonsterInRoom.GetName()} dropped {itemDropped}!\n");
 
-                    player.AddItemToInventory(itemDropped);
+                    Item droppedItem = new Item(itemDropped);
+                    
+                    player.AddItemToInventory(droppedItem);
 
                     currentRoom.MonsterInRoom = null;
 

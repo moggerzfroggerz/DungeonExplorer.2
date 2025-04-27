@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
 
 namespace DungeonExplorer
@@ -7,7 +8,7 @@ namespace DungeonExplorer
     public class Room
     {
         public string Description { get; set; }
-        public List<string> Inventory { get; set; }
+        public List<Item> Inventory { get; set; }
         public Dictionary<string, Room> ConnectedRooms { get; set; }
         public Monster MonsterInRoom { get; set; }
 
@@ -22,7 +23,8 @@ namespace DungeonExplorer
             "Boomerang",
             "Nunchucks",
             "Staff of Power",
-            "Spear"
+            "Spear",
+            "Mysterious Key"
         };
 
 
@@ -59,21 +61,25 @@ namespace DungeonExplorer
         private static Random rand = new Random();
 
         // Choose a random list of items for rooms:
-        private List<string> RandomlyChooseItems()
+        private List<Item> RandomlyChooseItems()
         {
             int itemCount = rand.Next(1, 3);
-            List<string> randomItems = new List<string>();
+            List<Item> theseWeapons = new List<Item>();
 
             for (int i = 0; i < itemCount; i++)
             {
-                string randomItem = allAvailableItems[rand.Next(allAvailableItems.Count)];
-                if (!randomItems.Contains(randomItem))
-                {
-                    randomItems.Add(randomItem);
-                }
-            }
+                string thisWeapon = allAvailableItems[rand.Next(allAvailableItems.Count)];
+                int weaponDmg = 0;
+                if (thisWeapon == "Shortsword") weaponDmg = 8;
+                else if (thisWeapon == "Mace") weaponDmg = 16;
+                else if (thisWeapon == "Boomerang") weaponDmg = 12;
+                else if (thisWeapon == "Nunchucks") weaponDmg = 14;
+                else if (thisWeapon == "Staff of Power") weaponDmg = 20;
+                else if (thisWeapon == "Spear") weaponDmg = 15;
 
-            return randomItems;
+                    theseWeapons.Add(new Item(thisWeapon, weaponDmg));
+            }
+            return theseWeapons;
         }
 
         // The method below shows which items are in whichever room is called: 
@@ -83,17 +89,17 @@ namespace DungeonExplorer
             {
                 return "None";
             }
-            return string.Join(", ", Inventory);
+            return string.Join(", ", Inventory.Select(item => item.Name));
         }
 
         // This method adds an item to the room: 
-        public void AddItemToInventory(string item)
+        public void AddItemToInventory(Item item)
         {
             Inventory.Add(item);
         }
 
         // This method removes an item from the room, used when a player has picked up an item: 
-        public void RemoveItem(string item)
+        public void RemoveItem(Item item)
         {
             Inventory.Remove(item);
         }

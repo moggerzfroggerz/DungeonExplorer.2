@@ -14,13 +14,13 @@ namespace DungeonExplorer
         {
         }
 
-        public override string Damage()
+        public override string Damage(int damageDone)
         {
             // This allows the monster to deal random damage within the minimum and maximum damage values:
             Random random = new Random();
-            int damageDone = random.Next(MinimumDamage, MaximumDamage + 1);
+            int damageGiven = random.Next(MinimumDamage, MaximumDamage + 1);
 
-            this.Health -= damageDone;
+            this.Health -= damageGiven;
 
             if (this.Health < 0)
             {

@@ -6,28 +6,28 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    // This class contains the Creepy Caterpillar's methods and attributes: 
-    internal class CreepyCaterpillar : Monster
+    // This class contains the get and set methods for the frog's attributes and other methods:  
+    internal class GreedyGremlin : Monster
     {
         // Defines the Monster name, Main Health, Minimum Health, Maximum Health, Minimum Damage, Maximum Damage:
-        public CreepyCaterpillar() : base("Creepy Caterpillar", 10, 2, 8, 5, 6)
+        public GreedyGremlin() : base("Greedy Gremlin", 60, 55, 100, 20, 30)
         {
         }
 
-        public override string Damage()
+        public override string Damage(int damageDone)
         {
             // This allows the monster to deal random damage within the minimum and maximum damage values:
             Random random = new Random();
-            int damageDone = random.Next(MinimumDamage, MaximumDamage + 1);
+            int damageGiven = random.Next(MinimumDamage, MaximumDamage + 1);
 
-            this.Health -= damageDone;
+            this.Health -= damageGiven;
 
             if (this.Health < 0)
             {
                 this.Health = 0;
             }
 
-            return $"You hit the {Name} as hard as you could, dealing {damageDone} damage.\nIt scurries backwards, and now has {Health} health.";
+            return $"You hit the {Name} as hard as you could, dealing {damageDone} damage.\nScreeching, it leaps backwards, and now has {Health} health.";
         }
     }
 }
