@@ -12,6 +12,9 @@ namespace DungeonExplorer
         public Dictionary<string, Room> ConnectedRooms { get; set; }
         public Monster MonsterInRoom { get; set; }
 
+        public bool IsDoorLocked { get; set; }
+        public string DoorLockMessage { get; set; }
+
 
         private static List<string> allAvailableItems = new List<string>
         {
@@ -33,12 +36,44 @@ namespace DungeonExplorer
             Description = description;
             Inventory = RandomlyChooseItems();
             ConnectedRooms = new Dictionary<string, Room>();
+            if (description.Contains("appears empty"))
+            {
+                Item mysteriousKey = new Item("Mysterious Key");
+                Inventory.Add(mysteriousKey);
+            }
+            if (description.Contains("pitch black"))
+            {
+                IsDoorLocked = true;
+                DoorLockMessage = "This door is locked...\nYou need a key to open it.";
+            }
+            else
+            {
+                IsDoorLocked = false;
+                DoorLockMessage = "";
+            }
+
         }
 
         // This method connects the rooms:
         public void ConnectRoom(string direction, Room Room)
         {
             ConnectedRooms[direction] = Room;
+        }
+
+        public string UnlockDoor(Player player)
+        {
+            var hasKey = player.GetInventory().Contains("Mysterious key");
+
+            if (hasKey)
+            {
+                IsDoorLocked = false;
+                DoorLockMessage = "You have unlocked the door!";
+                return "You used the mysterious key to unlock the door.";
+            }
+            else
+            {
+                return "You don't have the key to unlock the door.";
+            }
         }
 
         // This method shows a description of the room:
@@ -82,6 +117,7 @@ namespace DungeonExplorer
                 else if (thisWeapon == "Bread") healingAmount = 10;
                 else if (thisWeapon == "Minor Health Potion") healingAmount = 20;
                 else if (thisWeapon == "Major Health Potion") healingAmount = 30;
+                else if (thisWeapon == "Mysterious Key") weaponDmg = 0;
 
                 theseWeapons.Add(new Item(thisWeapon, weaponDmg, healingAmount));
             }

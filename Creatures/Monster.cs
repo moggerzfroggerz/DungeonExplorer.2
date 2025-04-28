@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,14 +40,15 @@ namespace DungeonExplorer
             Random random = new Random();
             int damageGiven = random.Next(MinimumDamage, MaximumDamage + 1);
 
-            this.Health -= damageGiven;
+            this.Health -= damageDone;
 
             if (this.Health < 0)
             {
                 this.Health = 0;
             }
 
-            return $"You hit the {this.Name} as hard as you could, dealing {damageGiven}. It now has {Health} health.";
+            return $"You hit the {this.Name} as hard as you could, dealing {damageDone}. It now has {this.Health} health.";
+
         }
         public virtual void Heal()
         {
@@ -61,7 +63,9 @@ namespace DungeonExplorer
         {
             Random random = new Random();
             int damage = random.Next(MinimumDamage, MaximumDamage + 1);
-            Console.WriteLine($"\n{Name} attacked you...");
+            target.DamageTaken(damage);
+            Console.WriteLine($"\n{Name} attacks {target.Name} for {damage} damage...");
+            Console.WriteLine($"{target.Name} has {target.ShowHealth()} health.");
             target.DamagePlayer(damage);
         }
     }

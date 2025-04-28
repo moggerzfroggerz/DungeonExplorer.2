@@ -22,9 +22,14 @@ namespace DungeonExplorer
             // Player name and Health:
             player = new Player("Player", 100);
 
+            Item fists = new Item("Fists", 5);
+            player.AddItemToInventory(fists);
+
             // Bread is a healing item that every player begins with:
             Item Bread = new Item("Bread");
             player.AddItemToInventory(Bread);
+
+
 
             // The rooms are created below:
             Room room1 = new Room("A dark room, covered in slime, with a foul aroma overpowering your nose.\nA huge slug-like monster is watching you, creeping closer...");
@@ -99,9 +104,23 @@ namespace DungeonExplorer
                 Console.ResetColor();
                 Console.WriteLine();
 
+                // If the player's health becomes less than zero, they lose the game and the playing loop breaks: 
+                if (player.ShowHealth() <= 0)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Game over! The monster has killed you.");
+                    playing = false;
+                    break;
+                }
+                
+                if (currentRoom.IsDoorLocked)
+                {
+                    Console.WriteLine(currentRoom.DoorLockMessage);
+                }
+
                 if (currentRoom.MonsterInRoom != null)
                 {
-                    Console.WriteLine($"\n{currentRoom.MonsterInRoom.GetName()} current Health is:");
+                    Console.WriteLine($"\n{currentRoom.MonsterInRoom.GetName()} current Health: {currentRoom.MonsterInRoom.GetHealth()}");
                     // Monster Health values are shown in Dark Magenta:
                     Console.ForegroundColor = ConsoleColor.DarkMagenta;
                     Console.Write(currentRoom.MonsterInRoom.GetHealth());
@@ -112,24 +131,32 @@ namespace DungeonExplorer
                     Console.WriteLine("\nYou cannot attack as there is no monster in this room.");
                 }
                 string input = ExplorerInput();
-
                 // Error-handling is used here to make sure the player cannot deal damage when no monster exists:
                 if (input == "d" && currentRoom.MonsterInRoom != null)
                 {
-                    var bestWeapon = player.SortWeaponsDmg().FirstOrDefault();
+                    
+                    //Console.WriteLine(player.ShowInventory());
+                    var bestWeapon = player.SortWeaponsDmg()[0];
                     if (bestWeapon != null)
                     {
                         // Console is cleared so the game looks tidier:
+                        int damageDone = bestWeapon.ItemDmg;
                         Console.Clear();
 
-                        int damageDone = bestWeapon.ItemDmg;
+                        currentRoom.MonsterInRoom.DamageTaken(damageDone);
                         // Player deals damage to the monster:
-                        Console.WriteLine(currentRoom.MonsterInRoom.Damage(damageDone));
+                        Console.WriteLine($"You deal {damageDone} damage to {currentRoom.MonsterInRoom.GetName()}.");
+                        Console.WriteLine($"{currentRoom.MonsterInRoom.GetName()} has {currentRoom.MonsterInRoom.GetHealth()} health.");
 
                         // If monster still has Health, it will attack the player:
                         if (currentRoom.MonsterInRoom.IsAlive())
                         {
+                            Console.WriteLine($"{currentRoom.MonsterInRoom.GetName()} attacked you!");
                             currentRoom.MonsterInRoom.AttackPlayer(player);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"{currentRoom.MonsterInRoom.GetName()} has been defeated!");
                         }
                     }
 
@@ -176,7 +203,15 @@ namespace DungeonExplorer
                 else if (input == "m")
                 {
                     // Moves the player to another room:
-                    MoveToAnotherRoom();
+                    //MoveToAnotherRoom();
+                    if (currentRoom.IsDoorLocked)
+                    {
+                        Console.WriteLine(currentRoom.UnlockDoor(player));
+                    }
+                    else
+                    {
+                        MoveToAnotherRoom();
+                    }
                 }
                 else if (input == "e")
                 {
@@ -258,7 +293,7 @@ namespace DungeonExplorer
             Console.WriteLine("");
             Console.WriteLine("\n\nMake your move:");
             Console.WriteLine("Enter d to deal damage.");
-            Console.WriteLine("Enter e to eat food and regain health.");
+            Console.WriteLine("Enter e to eat food or use a healing item to regain health.");
                 Console.WriteLine("Enter c to collect items.");
             if (player.HasItems()) Console.WriteLine("Enter b to open your backpack.");
             Console.WriteLine("Enter m to move to another room.");
@@ -312,7 +347,7 @@ namespace DungeonExplorer
                 Console.Clear();
                 Console.WriteLine($"Current Room: {currentRoom.RoomDescription()}");
 
-                // If there is a monster present in the room, displays which monster it is: 
+                // If there is a monster present in the room, displays which monster it is: tell
                 if (currentRoom.MonsterInRoom != null)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;

@@ -42,20 +42,20 @@ namespace DungeonExplorer
 
             if (healingItems.Any())
             {
-                inventoryDisplay.Add("Healing items: ");
+                inventoryDisplay.Add("\nHealing items: ");
                 foreach (var healingItem in healingItems)
                 {
-                    inventoryDisplay.Add($"{healingItem.Name} (Healing: {healingItem.Health})");
+                    inventoryDisplay.Add($"{healingItem.Name} \n(Healing: {healingItem.Health})");
                 }
             }
 
             
             if (sortedWeapons.Any())
             {
-                inventoryDisplay.Add("Weapons: ");
+                inventoryDisplay.Add("\nWeapons: ");
                 foreach (var weapon in sortedWeapons)
                 {
-                    inventoryDisplay.Add($"{weapon.Name} (Damage: {weapon.ItemDmg})");
+                    inventoryDisplay.Add($"{weapon.Name} \n(Damage: {weapon.ItemDmg})");
                 }
             }
 

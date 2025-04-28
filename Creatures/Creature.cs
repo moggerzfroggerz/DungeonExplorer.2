@@ -25,6 +25,7 @@ namespace DungeonExplorer
         public void DamageTaken(int damage)
         {
             Health -= damage;
+            if (Health < 0) Health = 0;
         }
         public bool IsAlive()
         {
