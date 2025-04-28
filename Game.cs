@@ -112,11 +112,6 @@ namespace DungeonExplorer
                     playing = false;
                     break;
                 }
-                
-                if (currentRoom.IsDoorLocked)
-                {
-                    Console.WriteLine(currentRoom.DoorLockMessage);
-                }
 
                 if (currentRoom.MonsterInRoom != null)
                 {
@@ -203,15 +198,7 @@ namespace DungeonExplorer
                 else if (input == "m")
                 {
                     // Moves the player to another room:
-                    //MoveToAnotherRoom();
-                    if (currentRoom.IsDoorLocked)
-                    {
-                        Console.WriteLine(currentRoom.UnlockDoor(player));
-                    }
-                    else
-                    {
-                        MoveToAnotherRoom();
-                    }
+                    MoveToAnotherRoom();
                 }
                 else if (input == "e")
                 {
