@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace DungeonExplorer
 {
@@ -59,7 +61,6 @@ namespace DungeonExplorer
 
 
             return inventoryDisplay.Count > 0 ? string.Join("\n", inventoryDisplay) : "Your backpack is empty.";
-            //return inventory.Count > 0 ? string.Join(", ", inventoryDisplay) : "Your backpack is empty";
         }
 
         // Allows other classes to access this method without making any changes:
@@ -93,7 +94,7 @@ namespace DungeonExplorer
             if (item == null)
             {
                 Console.Clear();
-                return $"\nYou don't have any {itemName} to consume.";
+                return $"You don't have any {itemName} to consume.";
             }
 
             // Does healing, as long as the item is a healing item:
@@ -105,14 +106,18 @@ namespace DungeonExplorer
                     Health = Math.Min(Health + healValue, 300);
                     inventory.Remove(item);
                     Console.Clear();
-                    return $"You used {itemName} and healed {healValue} Health.";
+                    return $"> You used {itemName} and healed {healValue} Health.\n";
+
                 }
                 else
                 {
-                    return $"{itemName} is not a healing item.";
+                    return $"> {itemName} is not a healing item.\n";
                 }
             }
-            return $"You can't consume {itemName} because it isn't a healing item...";
+
+
+            Console.Clear();
+            return $"You can't consume \"{itemName}\" because it isn't a healing item!";
         }
         // The method below alters the players health value when a monster has dealt damage: 
         public void DamagePlayer(int damage)

@@ -62,17 +62,19 @@ namespace DungeonExplorer
             string statistics = "";
             if (ListNum(DamageTaken) > 0 && ListNum(DamageDone) > 0)
             {
+                Console.Clear();
                 statistics = ($"Statistics:\n\nYou dealt {ListSum(DamageDone)} damage.\nYou attacked {ListNum(DamageDone)} times, and your average damage per attack was: {AverageDmg(DamageDone)}. \n\n") +
                 ($"You took {ListSum(DamageTaken)} damage from monsters.\nYou were damaged {ListNum(DamageTaken)} times. The average damage you took from attacks was: {AverageDmg(DamageTaken)}. \n\n") +
                 ($"You entered {RoomsEntered} rooms.\n\n");
             }
             else
             {
+                Console.Clear();
                 statistics = ($"Statistics:\n\nYou did {ListSum(DamageDone)} damage to monster and you attacked {ListNum(DamageDone)} times. \n\n") +
                 ($"You took {ListSum(DamageTaken)} damage from monsters.\nYou were damaged {ListNum(DamageTaken)} times. The average damage you took from attacks was: {AverageDmg(DamageTaken)}. \n\n") +
                 ($"You entered {RoomsEntered} rooms.\n\n");
             }
-            statistics += ("Game over.\nThanks for playing!");
+            statistics += ("Game over.\nThanks for playing!\n\n\n");
 
             return statistics;
         }

@@ -59,12 +59,15 @@ namespace DungeonExplorer
             }
         }
         // When called, it will randomly generate a value of damage that will be took from the player's health: 
-        public virtual void AttackPlayer(Player target)
+        public virtual int AttackPlayer(Player target)
         {
             Random random = new Random();
             int damage = random.Next(MinimumDamage, MaximumDamage + 1);
             target.DamageTaken(damage);
-            Console.WriteLine($"\n{Name} attacks {target.Name} for {damage} damage...");        }
+            Console.WriteLine($"\n{Name} attacks {target.Name} for {damage} damage...\n\n");
+
+            return damage;
+        }
 
         public override void DamageTaken(int damage)
         {
