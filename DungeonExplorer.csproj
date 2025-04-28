@@ -61,6 +61,7 @@
     <Compile Include="Room.cs" />
     <Compile Include="Creatures\Monsters\SassySnake.cs" />
     <Compile Include="Creatures\Monsters\SneakySilverfish.cs" />
+    <Compile Include="Statistics.cs" />
     <Compile Include="Tests.cs" />
   </ItemGroup>
   <ItemGroup>

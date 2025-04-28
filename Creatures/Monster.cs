@@ -64,9 +64,7 @@ namespace DungeonExplorer
             Random random = new Random();
             int damage = random.Next(MinimumDamage, MaximumDamage + 1);
             target.DamageTaken(damage);
-            Console.WriteLine($"\n{Name} attacks {target.Name} for {damage} damage...");
-            Console.WriteLine($"{target.Name} has {target.ShowHealth()} health.");
-        }
+            Console.WriteLine($"\n{Name} attacks {target.Name} for {damage} damage...");        }
 
         public override void DamageTaken(int damage)
         {

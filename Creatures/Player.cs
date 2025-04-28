@@ -53,7 +53,7 @@ namespace DungeonExplorer
                 inventoryDisplay.Add("\nWeapons: ");
                 foreach (var weapon in sortedWeapons)
                 {
-                    inventoryDisplay.Add($"{weapon.Name} \n(Damage: {weapon.ItemDmg})");
+                    inventoryDisplay.Add($"{weapon.Name} - Damage: {weapon.ItemDmg}");
                 }
             }
 
@@ -105,7 +105,7 @@ namespace DungeonExplorer
                     Health = Math.Min(Health + healValue, 300);
                     inventory.Remove(item);
                     Console.Clear();
-                    return $"You used {itemName} and healed {healValue} Health. Your current Health is: {Health}.";
+                    return $"You used {itemName} and healed {healValue} Health.";
                 }
                 else
                 {

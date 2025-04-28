@@ -108,14 +108,20 @@ namespace DungeonExplorer
                 if (player.ShowHealth() <= 0)
                 {
                     Console.Clear();
-                    Console.WriteLine("Game over! The monster has killed you.");
+                    Console.WriteLine("Game over! The monster has killed you...\n");
+                    Thread.Sleep(2000);
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("Press Enter to view your statistics");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.ReadLine();
+                    Console.WriteLine(Statistics.EndGameStats());
                     playing = false;
                     break;
                 }
 
                 if (currentRoom.MonsterInRoom != null)
                 {
-                    Console.WriteLine($"\n{currentRoom.MonsterInRoom.GetName()} current Health: {currentRoom.MonsterInRoom.GetHealth()}");
+                    Console.WriteLine($"\n{currentRoom.MonsterInRoom.GetName()} current Health is: ");
                     // Monster Health values are shown in Dark Magenta:
                     Console.ForegroundColor = ConsoleColor.DarkMagenta;
                     Console.Write(currentRoom.MonsterInRoom.GetHealth());
@@ -123,6 +129,7 @@ namespace DungeonExplorer
                 }
                 else
                 {
+                    Console.Clear();
                     Console.WriteLine("\nYou cannot attack as there is no monster in this room.");
                 }
                 string input = ExplorerInput();
@@ -141,13 +148,10 @@ namespace DungeonExplorer
 
                         currentRoom.MonsterInRoom.DamageTaken(damageDone);
                         // Player deals damage to the monster:
-                        Console.WriteLine($"You deal {damageDone} damage to {currentRoom.MonsterInRoom.GetName()}.");
-                        Console.WriteLine($"{currentRoom.MonsterInRoom.GetName()} has {currentRoom.MonsterInRoom.GetHealth()} health.");
-
+                        Console.WriteLine($"You deal {damageDone} damage to {currentRoom.MonsterInRoom.GetName()}...");
                         // If monster still has Health, it will attack the player:
                         if (currentRoom.MonsterInRoom.IsAlive())
                         {
-                            Console.WriteLine($"{currentRoom.MonsterInRoom.GetName()} attacked you!");
                             currentRoom.MonsterInRoom.AttackPlayer(player);
                         }
                         else
@@ -173,7 +177,7 @@ namespace DungeonExplorer
                 else if (input == "b" && player.HasItems())
                 {
                     Console.Clear();
-                    Console.WriteLine($"Your backpack contains: {player.ShowInventory()}");
+                    Console.WriteLine($"Your backpack contains: \n{player.ShowInventory()}");
                     Console.WriteLine("\nEnter 'u' to use an item, or enter 'r' to close the backpack.");
                     string secondInput = Console.ReadLine();
 
@@ -256,7 +260,9 @@ namespace DungeonExplorer
                     currentRoom.SetDescription("Remains of a defeated monster lay flat on the floor.");
 
                     String itemDropped = "a mysterious key";
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($"\n> The {currentRoom.MonsterInRoom.GetName()} dropped {itemDropped}!\n");
+                    Console.ForegroundColor= ConsoleColor.White;
 
                     Item droppedItem = new Item(itemDropped);
                     
