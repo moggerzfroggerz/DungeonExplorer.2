@@ -59,7 +59,7 @@ namespace DungeonExplorer
         private static readonly Dictionary<string, int> healingItems = new Dictionary<string, int>
         // Below are the healing items that can be used within the game:
         {
-            {"Bread", 10},
+            {"bread", 10},
             {"Minor Health Potion", 20},
             {"Major Health Potion", 30}
         };
@@ -81,7 +81,7 @@ namespace DungeonExplorer
             if (item == null)
             {
                 Console.Clear();
-                return $"\nYou don't have any {item} to consume.";
+                return $"\nYou don't have any {itemName} to consume.";
             }
 
             // Does healing, as long as the item is a healing item:
@@ -93,11 +93,11 @@ namespace DungeonExplorer
                     Health = Math.Min(Health + healValue, 300);
                     inventory.Remove(item);
                     Console.Clear();
-                    return $"You used {item} and healed {healValue} Health. Your current Health is: {Health}.";
+                    return $"You used {itemName} and healed {healValue} Health. Your current Health is: {Health}.";
                 }
                 else
                 {
-                    return $"{item} is not a healing item.";
+                    return $"{itemName} is not a healing item.";
                 }
             }
             return $"You can't consume {itemName} because it isn't a healing item...";
