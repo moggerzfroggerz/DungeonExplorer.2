@@ -36,13 +36,32 @@ namespace DungeonExplorer
         public string ShowInventory()
         {
             var sortedWeapons = SortWeaponsDmg();
+            var healingItems = inventory.Where(item => item.Health > 0).OrderByDescending(item => item.Health).ToList();
+
             var inventoryDisplay = new List<string>();
 
-            foreach (var weapon in sortedWeapons)
+            if (healingItems.Any())
             {
-                inventoryDisplay.Add($"{weapon.Name} (Damage: {weapon.ItemDmg})");
+                inventoryDisplay.Add("Healing items: ");
+                foreach (var healingItem in healingItems)
+                {
+                    inventoryDisplay.Add($"{healingItem.Name} (Healing: {healingItem.Health})");
+                }
             }
-            return inventory.Count > 0 ? string.Join(", ", inventoryDisplay) : "Your backpack is empty";
+
+            
+            if (sortedWeapons.Any())
+            {
+                inventoryDisplay.Add("Weapons: ");
+                foreach (var weapon in sortedWeapons)
+                {
+                    inventoryDisplay.Add($"{weapon.Name} (Damage: {weapon.ItemDmg})");
+                }
+            }
+
+
+            return inventoryDisplay.Count > 0 ? string.Join("\n", inventoryDisplay) : "Your backpack is empty.";
+            //return inventory.Count > 0 ? string.Join(", ", inventoryDisplay) : "Your backpack is empty";
         }
         // The variable below returns the user's health value:  
         public int ShowHealth()
@@ -60,8 +79,8 @@ namespace DungeonExplorer
         // Below are the healing items that can be used within the game:
         {
             {"bread", 10},
-            {"Minor Health Potion", 20},
-            {"Major Health Potion", 30}
+            {"minor health potion", 20},
+            {"major health potion", 30}
         };
 
         public static bool IsHealingItem(string item)

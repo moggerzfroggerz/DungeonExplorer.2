@@ -70,14 +70,20 @@ namespace DungeonExplorer
             {
                 string thisWeapon = allAvailableItems[rand.Next(allAvailableItems.Count)];
                 int weaponDmg = 0;
+                int healingAmount = 0;
+
+
                 if (thisWeapon == "Shortsword") weaponDmg = 8;
                 else if (thisWeapon == "Mace") weaponDmg = 16;
                 else if (thisWeapon == "Boomerang") weaponDmg = 12;
                 else if (thisWeapon == "Nunchucks") weaponDmg = 14;
                 else if (thisWeapon == "Staff of Power") weaponDmg = 20;
                 else if (thisWeapon == "Spear") weaponDmg = 15;
+                else if (thisWeapon == "Bread") healingAmount = 10;
+                else if (thisWeapon == "Minor Health Potion") healingAmount = 20;
+                else if (thisWeapon == "Major Health Potion") healingAmount = 30;
 
-                    theseWeapons.Add(new Item(thisWeapon, weaponDmg));
+                theseWeapons.Add(new Item(thisWeapon, weaponDmg, healingAmount));
             }
             return theseWeapons;
         }

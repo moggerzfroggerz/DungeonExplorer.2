@@ -25,7 +25,7 @@ namespace DungeonExplorer
 
         Inventory inv = new Inventory();
 
-        // The string below returns all the items in the player's backpack (inventory): 
+        // The string below joins all the items in the player's backpack (inventory): 
         public string Backpack()
         {
             return string.Join(", ", inventory);

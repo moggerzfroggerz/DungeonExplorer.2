@@ -9,7 +9,7 @@ namespace DungeonExplorer
         public string Name { get; private set; }
         public int ItemDmg { get; private set; }
         public int Health { get; private set; }
-        private List<string> inventory = new List<string>();
+       
 
         public Item(string name, int itemDmg = 0, int health = 0)
         {
