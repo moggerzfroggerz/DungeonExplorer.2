@@ -22,7 +22,7 @@ namespace DungeonExplorer
         {
             return Health;
         }
-        public void DamageTaken(int damage)
+        public virtual void DamageTaken(int damage)
         {
             Health -= damage;
             if (Health < 0) Health = 0;

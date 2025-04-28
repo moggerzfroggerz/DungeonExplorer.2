@@ -35,8 +35,6 @@ namespace DungeonExplorer
             Description = description;
             Inventory = RandomlyChooseItems();
             ConnectedRooms = new Dictionary<string, Room>();
-            
-
         }
 
         // This method connects the rooms:

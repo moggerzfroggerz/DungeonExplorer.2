@@ -7,8 +7,6 @@ namespace DungeonExplorer
     public class Player : Creature, IDamageable
     {
         // Initialises the name and health attribute for the player: 
-        public string Name { get; private set; }
-        public int Health { get; private set; }
         private List<Item> inventory = new List<Item>();
 
         public Player(string name, int health) : base(name, health)
@@ -62,11 +60,6 @@ namespace DungeonExplorer
 
             return inventoryDisplay.Count > 0 ? string.Join("\n", inventoryDisplay) : "Your backpack is empty.";
             //return inventory.Count > 0 ? string.Join(", ", inventoryDisplay) : "Your backpack is empty";
-        }
-        // The variable below returns the user's health value:  
-        public int ShowHealth()
-        {
-            return this.Health;
         }
 
         // Allows other classes to access this method without making any changes:
@@ -126,6 +119,11 @@ namespace DungeonExplorer
         {
             Health = Health - damage;
             Console.WriteLine($"You lost {damage} Health!");
+        }
+
+        public override void DamageTaken(int damage)
+        {
+            Health -= (int)(damage * 0.9);
         }
         public bool Escaped()
         {

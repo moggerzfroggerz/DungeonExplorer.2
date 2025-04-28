@@ -26,11 +26,11 @@ namespace DungeonExplorer
 
             this.Health = Math.Min(Math.Max(Health, MinimumHealth), MaximumHealth);
         }
-        public virtual int GetHealth()
+        public int GetHealth()
         {
             return this.Health;
         }
-        public virtual string GetName()
+        public string GetName()
         {
             return Name;
         }
@@ -66,7 +66,11 @@ namespace DungeonExplorer
             target.DamageTaken(damage);
             Console.WriteLine($"\n{Name} attacks {target.Name} for {damage} damage...");
             Console.WriteLine($"{target.Name} has {target.ShowHealth()} health.");
-            target.DamagePlayer(damage);
+        }
+
+        public override void DamageTaken(int damage)
+        {
+            Health -= (int)(damage * 1.1);
         }
     }
 }

@@ -126,6 +126,7 @@ namespace DungeonExplorer
                     Console.WriteLine("\nYou cannot attack as there is no monster in this room.");
                 }
                 string input = ExplorerInput();
+                Debug.Assert(input == "d" || input == "e" || input == "c" || input == "b" || input == "m", "Invalid input.");
                 // Error-handling is used here to make sure the player cannot deal damage when no monster exists:
                 if (input == "d" && currentRoom.MonsterInRoom != null)
                 {
@@ -281,13 +282,21 @@ namespace DungeonExplorer
             Console.WriteLine("\n\nMake your move:");
             Console.WriteLine("Enter d to deal damage.");
             Console.WriteLine("Enter e to eat food or use a healing item to regain health.");
-                Console.WriteLine("Enter c to collect items.");
+            Console.WriteLine("Enter c to collect items.");
             if (player.HasItems()) Console.WriteLine("Enter b to open your backpack.");
             Console.WriteLine("Enter m to move to another room.");
 
             string input = Console.ReadLine().Trim().ToLower();
-            Debug.Assert(input == "d" || input == "e" || input == "c" || input == "b" || input == "m", "Invalid input.");
-            return input;
+
+            List<string> validInput = new List<string>() { "d", "e", "c", "b", "m" };
+            if (validInput.Contains(input))
+            {
+                return input;
+            }
+            else
+            {
+                return ExplorerInput();
+            }
         }
 
         private void UnlockDoors()
