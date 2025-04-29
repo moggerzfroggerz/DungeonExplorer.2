@@ -9,6 +9,7 @@ namespace DungeonExplorer
 {
     internal class Tests
     {
+        // Tests values for validation: 
         public static void TestForPositiveInteger(int value)
         {
             Debug.Assert(value > 0, "Test failure. Value is not a positive integer");

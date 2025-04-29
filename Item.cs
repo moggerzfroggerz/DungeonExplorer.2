@@ -5,19 +5,19 @@ namespace DungeonExplorer
 {
     public class Item
     {
-        // Initialises the name and health attribute for the player. 
+        // Initialises the name and health attribute for the item: 
         public string Name { get; private set; }
-        public int Harm { get; private set; }
+        public int ItemDmg { get; private set; }
         public int Health { get; private set; }
-        private List<string> inventory = new List<string>();
+       
 
-        public Item(string name, int harm, int health)
+        public Item(string name, int itemDmg = 0, int health = 0)
         {
             Name = name;
-            // This will check that the user's health is a positive integer and above 0. It could be useful in the future once the monster can attack
-            Tests.TestForPositiveInteger(harm);
-            Harm = harm;
-            Tests.TestForPositiveInteger(health);
+            // This will check that the user's health is 0 or above:
+            Tests.TestForZeroOrAbove(itemDmg);
+            ItemDmg = itemDmg;
+            Tests.TestForZeroOrAbove(health);
             Health = health;
         }
     }
