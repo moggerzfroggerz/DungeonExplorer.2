@@ -27,6 +27,7 @@ namespace DungeonExplorer
             Health -= damage;
             if (Health < 0) Health = 0;
         }
+        // Boolean value used to check the creature is alive, used mainly for playing logic: 
         public bool IsAlive()
         {
             return Health > 0;

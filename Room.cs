@@ -7,6 +7,7 @@ namespace DungeonExplorer
 {
     public class Room
     {
+        // Get and Set methods for the Room descriptions, Inventory, Connected rooms, and the MonsterInRoom: 
         public string Description { get; set; }
         public List<Item> Inventory { get; set; }
         public Dictionary<string, Room> ConnectedRooms { get; set; }
@@ -14,7 +15,7 @@ namespace DungeonExplorer
 
        
 
-
+        // All items available for the user to collect: 
         private static List<string> allAvailableItems = new List<string>
         {
             "Bread",

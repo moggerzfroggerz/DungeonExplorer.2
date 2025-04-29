@@ -17,6 +17,7 @@ namespace DungeonExplorer
             Tests.TestForPositiveInteger(health);
             Health = health;
         }
+        // Orders Weapons by their value of damage caused descending: 
         public List<Item> SortWeaponsDmg()
         {
             return inventory
@@ -24,15 +25,17 @@ namespace DungeonExplorer
                 .OrderByDescending(item => item.ItemDmg)
                 .ToList();
         }
+        // Adds items to the inventory: 
         public void AddItemToInventory(Item item)
         {
             inventory.Add(item);
         }
+        // A boolean value used to confirm that the user has items in their inventory: 
         public bool HasItems()
         {
             return inventory.Count > 0;
         }
-
+        // A string which displays the weapons and their damage value as well as the healing items and their healing value: 
         public string ShowInventory()
         {
             var sortedWeapons = SortWeaponsDmg();
@@ -70,19 +73,18 @@ namespace DungeonExplorer
         }
 
         private static readonly Dictionary<string, int> healingItems = new Dictionary<string, int>
-        // Below are the healing items that can be used within the game:
+        // Below are the healing items that can be used within the game to boost the player's health points:
         {
             {"bread", 10},
             {"minor health potion", 20},
             {"major health potion", 30}
         };
-
+        // Can be used to differentiate between healing and non-healing items: 
         public static bool IsHealingItem(string item)
         {
             string normalisedItem = item.ToLower().Trim();
             return healingItems.Keys.Any(k => k.ToLower().Trim() == normalisedItem);
-            //var healingItems = new List<string> { "bread,", "minor health potion", "major health potion" };
-            //return healingItems.Contains(item.ToLower().Trim());
+            
         }
 
         // The code below boosts the player's health value when they choose to eat: 
@@ -90,7 +92,7 @@ namespace DungeonExplorer
         {
             itemName = itemName.ToLower().Trim();
             var item = inventory.FirstOrDefault(i => i.Name.ToLower().Trim() == itemName);
-
+            // Will inform the player if they try to consume something that they do not have in their posession: 
             if (item == null)
             {
                 Console.Clear();
@@ -115,7 +117,7 @@ namespace DungeonExplorer
                 }
             }
 
-
+            // Handles error message for if the user tries to consume something that isn't a healing item: 
             Console.Clear();
             return $"You can't consume \"{itemName}\" because it isn't a healing item!";
         }
@@ -125,14 +127,10 @@ namespace DungeonExplorer
             Health = Health - damage;
             Console.WriteLine($"You lost {damage} Health!");
         }
-
+        // Controls the damage taken by the player: 
         public override void DamageTaken(int damage)
         {
             Health -= (int)(damage * 0.9);
-        }
-        public bool Escaped()
-        {
-            return Health > 0;
         }
     }
 }

@@ -68,7 +68,7 @@ namespace DungeonExplorer
 
             return damage;
         }
-
+        // Overrised the DamageTaken method for the Monster's when they are attacked: 
         public override void DamageTaken(int damage)
         {
             Health -= (int)(damage * 1.1);

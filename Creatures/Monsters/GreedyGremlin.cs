@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    // This class contains the get and set methods for the frog's attributes and other methods:  
+    // This class contains the get and set methods for the Gremlin's attributes and other methods:  
     internal class GreedyGremlin : Monster
     {
         // Defines the Monster name, Main Health, Minimum Health, Maximum Health, Minimum Damage, Maximum Damage:

@@ -5,6 +5,7 @@ namespace DungeonExplorer
 {
     public class Inventory
     {
+        // Manages the player's Inventory: 
         public class InventoryItems
         {
             private List<string> items = new List<string>();
