@@ -122,11 +122,11 @@ namespace DungeonExplorer
             return $"You can't consume \"{itemName}\" because it isn't a healing item!";
         }
         // The method below alters the players health value when a monster has dealt damage: 
-        public void DamagePlayer(int damage)
-        {
-            Health = Health - damage;
-            Console.WriteLine($"You lost {damage} Health!");
-        }
+        //public void DamagePlayer(int damage)
+        //{
+        //    Health = Health - damage;
+        //    Console.WriteLine($"You lost {damage} Health!");
+        //}
         // Controls the damage taken by the player: 
         public override void DamageTaken(int damage)
         {
