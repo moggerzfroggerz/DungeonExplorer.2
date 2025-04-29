@@ -48,7 +48,7 @@ namespace DungeonExplorer
                 inventoryDisplay.Add("\nHealing items: ");
                 foreach (var healingItem in healingItems)
                 {
-                    inventoryDisplay.Add($"{healingItem.Name} \n(Healing: {healingItem.Health})");
+                    inventoryDisplay.Add($"{healingItem.Name} - Healing: {healingItem.Health}");
                 }
             }
 
