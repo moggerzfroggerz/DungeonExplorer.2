@@ -90,6 +90,18 @@ namespace DungeonExplorer
         {
             bool playing = true;
 
+            // When game begins, this intro screen plays:
+            Console.WriteLine("Welcome to the Dungeons, explorer...");
+            Thread.Sleep(2000);
+            Console.WriteLine("\nCreatures of nightmares lurk in these depths.");
+            Thread.Sleep(2000);
+            Console.WriteLine("\nPress the 'Enter' key if you feel brave enough to venture any further...");
+            Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine("Good luck brave traveller...");
+            Thread.Sleep(3000);
+            Console.Clear();
+
             while (playing)
             {
                 Console.WriteLine($"Current Room: {currentRoom.RoomDescription()}");
